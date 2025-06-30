@@ -3,9 +3,11 @@ import { TodoList } from "../cmps/TodoList.jsx"
 import { DataTable } from "../cmps/data-table/DataTable.jsx"
 import { todoService } from "../services/todo.service.js"
 import { showErrorMsg, showSuccessMsg } from "../services/event-bus.service.js"
+import { addTodo, setFilter } from '../store/todo.reducer.js'
 
 const { useState, useEffect } = React
 const { Link, useSearchParams } = ReactRouterDOM
+const { useSelector, useDispatch } = ReactRedux 
 
 export function TodoIndex() {
 
@@ -17,6 +19,14 @@ export function TodoIndex() {
     const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
 
     const [filterBy, setFilterBy] = useState(defaultFilter)
+
+  function onAdd() {
+    dispatch(addTodo({ id: Date.now(), txt: 'New Task', isDone: false }))
+  }
+
+  function onChangeFilter(filter) {
+    dispatch(setFilter(filter))
+  }
 
     useEffect(() => {
         setSearchParams(filterBy)
