@@ -1,5 +1,6 @@
 const { useRef, useState } = React
 const { Outlet, NavLink } = ReactRouterDOM
+const { useSelector } = ReactRedux
 // const { PropTypes } = PropTypes
 
 import { utilService } from '../services/util.service.js'
@@ -8,8 +9,11 @@ import { AboutVision } from '../cmps/AboutVision.jsx'
 
 export function About() {
     const titleRef = useRef()
-    const count = 1000001
-
+    // const count = 1000001
+  
+    debugger
+    const count = useSelector(state => state.count.count)
+    //console.log('count:', count)
     function onViewMore() {
         alert('curiosity killed the cat')
     }
@@ -38,7 +42,9 @@ export function About() {
             </ul>
             <hr />
             <FancyBox title="Hola!" onClose={() => console.log('ok, closing')}>
-                <h3>{count.toLocaleString()} Followers</h3>
+                {/* <h3>{count.toLocaleString()} Followers</h3> */}
+                <h3>{count} Followers</h3>
+
                 <button onClick={onViewMore}>Tell me More</button>
             </FancyBox>
             <hr />
@@ -59,7 +65,7 @@ export function About() {
     )
 }
 
-function FancyBox({title = 'Hello', onClose, children}) {
+function FancyBox({ title = 'Hello', onClose, children }) {
     return <div className="fancy-box">
         <button style={{ float: 'right' }} onClick={onClose}>x</button>
         <h3>{title}</h3>
@@ -98,12 +104,12 @@ function SplitPane(props) {
 const Title = (props) => <h1>Title: {props.txt}</h1>
 
 Title.propTypes = {
-   txt(props, propName, componentName){
-      if(!(propName in props)){
-         throw new Error(`missing ${propName}`)
-      }
-      if(props[propName].length < 6){
-         throw new Error(`${propName} was too short`)
-      }
-   }
+    txt(props, propName, componentName) {
+        if (!(propName in props)) {
+            throw new Error(`missing ${propName}`)
+        }
+        if (props[propName].length < 6) {
+            throw new Error(`${propName} was too short`)
+        }
+    }
 }
