@@ -3,10 +3,12 @@
 //* Action types for user management
 export const SET_USER = 'SET_USER'   // Set logged-in user
 export const LOGOUT = 'LOGOUT'       // Clear user on logout
+import { userService } from '../services/user.service.js'
 
 // * Initial state for the user module
 const initialState = {
-    user: null  // Logged-in user object (or null if logged out)
+    user: null,  // Logged-in user object (or null if logged out)
+    loggedInUser: userService.getLoggedinUser() // For compatibility with older code
 }
 
 // * Reducer function for user state

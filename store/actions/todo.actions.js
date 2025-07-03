@@ -38,6 +38,7 @@ export function saveTodo(todoToSave) {
 }
 
 export function removeTodo(todoId) {
+    
     return todoService.remove(todoId)
         .then(() => {
             store.dispatch({ type: REMOVE_TODO, todoId })

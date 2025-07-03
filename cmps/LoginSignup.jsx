@@ -25,7 +25,6 @@ export function LoginSignup({ onSetUser }) {
 
     function login(credentials) {
         console.log('credentials:', credentials)
-        debugger
         userService.login(credentials)
             .then(onSetUser)
             .then(() => { showSuccessMsg('Logged in successfully') })

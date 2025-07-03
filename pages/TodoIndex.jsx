@@ -29,8 +29,8 @@ import { ADD_TODO, SET_TODOS } from '../store/reducers/todo.reducer.js'
 
 export function TodoIndex() {
     // * Get todos and filterBy from Redux store
-    const todos = useSelector(state => state.todoState.todos)
-    // const [filterBy, setFilterBy] = useSelector(state => state.todoState.filterBy)
+    const todos = useSelector(state => state.todoModule.todos)
+    // const [filterBy, setFilterBy] = useSelector(state => state.todoModule.filterBy)
     const [filterBy, setFilterBy] = useState(todoService.getDefaultFilter())
 
     // * Get the dispatch function to send actions to Redux
@@ -65,9 +65,8 @@ export function TodoIndex() {
     // * Remove a todo by ID
     function onRemoveTodo(todoId) {
         // todoService.remove(todoId)
-        dispatch(removeTodo(todoId))
+        removeTodo(todoId)
             .then(() => {
-                setTodos(prevTodos => prevTodos.filter(todo => todo._id !== todoId))
                 showSuccessMsg(`Todo removed`)
             })
             .catch(err => {
@@ -83,7 +82,7 @@ export function TodoIndex() {
         const newTodo = todoService.getEmptyTodo(txt)
         // TODO: use dispatch/action
         // dispatch({ type: ADD_CAR_TO_CART, car })
-        dispatch(saveTodo(newTodo))
+        saveTodo(newTodo)
             .then(() => showSuccessMsg('Todo added'))
             .catch(() => showErrorMsg('Cannot add todo'))
     }

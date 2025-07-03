@@ -1,6 +1,7 @@
 const { useState } = React
 const { Link, NavLink } = ReactRouterDOM
 const { useNavigate } = ReactRouter
+const { useSelector } = ReactRedux
 
 import { userService } from '../services/user.service.js'
 import { UserMsg } from "./UserMsg.jsx"
@@ -11,7 +12,8 @@ import { showErrorMsg } from '../services/event-bus.service.js'
 export function AppHeader() {
     const navigate = useNavigate()
     const [user, setUser] = useState(userService.getLoggedinUser())
-    
+    //const user = useSelector(state => state.userModule.loggedInUser)
+
     function onLogout() {
         userService.logout()
             .then(() => {

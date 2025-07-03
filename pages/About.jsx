@@ -11,8 +11,7 @@ export function About() {
     const titleRef = useRef()
     // const count = 1000001
   
-    debugger
-    const count = useSelector(state => state.count.count)
+    const count = useSelector(state => state.getFollowersModule.count)
     //console.log('count:', count)
     function onViewMore() {
         alert('curiosity killed the cat')

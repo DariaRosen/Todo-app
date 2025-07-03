@@ -41,7 +41,7 @@ export function todoReducer(state = initialState, cmd) {
             return {
                 ...state,
                 lastTodos: [...state.todos],
-                todos: state.todos.filter(todo => todo.id !== cmd.todoId)
+                todos: state.todos.filter(todo => todo._id !== cmd.todoId)
             }
 
         // Toggle a todo's isDone status by ID
