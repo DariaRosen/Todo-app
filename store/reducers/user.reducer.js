@@ -1,9 +1,10 @@
 // // Manages user object
 
+import { userService } from '../../services/user.service.js'
 //* Action types for user management
 export const SET_USER = 'SET_USER'   // Set logged-in user
 export const LOGOUT = 'LOGOUT'       // Clear user on logout
-import { userService } from '../services/user.service.js'
+
 
 // * Initial state for the user module
 const initialState = {
