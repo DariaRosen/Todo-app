@@ -18,11 +18,11 @@ export function userReducer(state = initialState, cmd) {
 
         // Set the current user
         case SET_USER:
-            return { ...state, user: cmd.user }
+            return { ...state, loggedInUser: cmd.user }
 
         // Clear the user (e.g., on logout)
         case LOGOUT:
-            return { ...state, user: null }
+            return { ...state, loggedInUser: null }
 
         // Unknown action – return current state
         default:

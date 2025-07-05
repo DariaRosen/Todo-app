@@ -6,7 +6,8 @@ const { useSelector } = ReactRedux
 import { userService } from '../services/user.service.js'
 import { UserMsg } from "./UserMsg.jsx"
 import { LoginSignup } from './LoginSignup.jsx'
-import { showErrorMsg } from '../services/event-bus.service.js'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
+import { logout } from '../store/actions/user.actions.js'
 
 
 export function AppHeader() {
@@ -16,19 +17,20 @@ export function AppHeader() {
 console.log('user in AppHeader:', user);
 
     function onLogout() {
-        userService.logout()
-            .then(() => {
-                onSetUser(null)
-            })
+        logout()
+            // .then(() => {
+            //     showSuccessMsg('Logged out successfully')
+            // })
             .catch((err) => {
                 showErrorMsg('OOPs try again')
             })
     }
 
     function onSetUser(user) {
-        setUser(user)
-        navigate('/')
+        // setUser(user)
+        // navigate('/')
     }
+
     return (
         <header className="app-header full main-layout">
             <section className="header-container">
