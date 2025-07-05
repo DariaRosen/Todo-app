@@ -64,16 +64,17 @@ export function TodoIndex() {
 
     // * Remove a todo by ID
     function onRemoveTodo(todoId) {
-        // todoService.remove(todoId)
+        const isConfirmed = window.confirm('Are you sure you want to delete this todo?')
+        if (!isConfirmed) return
+
         removeTodo(todoId)
-            .then(() => {
-                showSuccessMsg(`Todo removed`)
-            })
+            .then(() => showSuccessMsg(`Todo removed`))
             .catch(err => {
                 console.log('err:', err)
                 showErrorMsg('Cannot remove todo ' + todoId)
             })
     }
+
 
     // * Create and save a new random todo
     function onAddTodo() {
