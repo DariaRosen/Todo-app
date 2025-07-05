@@ -2,7 +2,6 @@
 const { useState, useEffect } = React
 const { useSelector, useDispatch } = ReactRedux
 const { Link } = ReactRouterDOM
-const [isLoading, setIsLoading] = useState(true)
 
 
 // * Import reusable components
@@ -31,7 +30,7 @@ export function TodoIndex() {
     // * Get todos and filterBy from Redux store
     const todos = useSelector(state => state.todoModule.todos)
     const filterBy = useSelector(state => state.todoModule.filterBy)
-
+    const [isLoading, setIsLoading] = React.useState(true)
     // * Get the dispatch function to send actions to Redux
     const dispatch = useDispatch()
 

@@ -9,7 +9,8 @@ export const userService = {
     getById,
     query,
     getEmptyCredentials,
-    addActivity
+    addActivity,
+    saveUserPrefs
 }
 const STORAGE_KEY_LOGGEDIN = 'user'
 const STORAGE_KEY = 'userDB'
@@ -94,6 +95,12 @@ function addActivity(txt) {
         })
 }
 
+function saveUserPrefs(user) {
+    return storageService.put(STORAGE_KEY, user).then(savedUser => {
+        sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(savedUser)) // Optional
+        return savedUser
+    })
+}
 
 // signup({username: 'muki', password: 'muki1', fullname: 'Muki Ja'})
 // login({username: 'muki', password: 'muki1'})

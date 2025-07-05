@@ -13,6 +13,7 @@ import { TodoEdit } from "./pages/TodoEdit.jsx"
 import { AboutTeam } from "./cmps/AboutTeam.jsx"
 import { AboutVision } from "./cmps/AboutVision.jsx"
 import { Dashboard } from "./pages/Dashboard.jsx"
+import { UserDetails } from "./pages/UserDetails.jsx"
 
 // * Import Redux store
 import { store } from './store/store.js'
@@ -52,6 +53,8 @@ export function RootCmp() {
 
                             {/* Dashboard page */}
                             <Route path="/dashboard" element={<Dashboard />} />
+                            {/* Details page for a specific Todo */}
+                            <Route path="/details" element={<UserDetails />} />
                             {/*"Not Found" page */}
                             <Route path="*" element={<Home />} />
                         </Routes>

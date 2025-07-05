@@ -10,6 +10,7 @@ import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { logout } from '../store/actions/user.actions.js'
 
 
+
 export function AppHeader() {
     const navigate = useNavigate()
     //const [user, setUser] = useState(userService.getLoggedinUser())
@@ -51,6 +52,7 @@ export function AppHeader() {
                     <NavLink to="/about" >About</NavLink>
                     <NavLink to="/todo" >Todos</NavLink>
                     <NavLink to="/dashboard" >Dashboard</NavLink>
+                    <NavLink to="/details" >Details</NavLink>
                 </nav>
             </section>
             <UserMsg />
