@@ -2,6 +2,8 @@
 const { useState, useEffect } = React
 const { useSelector, useDispatch } = ReactRedux
 const { Link } = ReactRouterDOM
+const [isLoading, setIsLoading] = useState(true)
+
 
 // * Import reusable components
 import { TodoFilter } from '../cmps/TodoFilter.jsx'
@@ -35,13 +37,21 @@ export function TodoIndex() {
 
 
     useEffect(() => {
+        setIsLoading(true) // Start loading
+
         loadTodos(filterBy)
-            .then(() => showSuccessMsg('Todos loaded'))
+            .then(() => {
+                showSuccessMsg('Todos loaded')
+            })
             .catch(err => {
-                console.eror('err:', err)
+                console.error('err:', err)
                 showErrorMsg('Cannot load todos')
             })
+            .finally(() => {
+                setIsLoading(false) // Done loading
+            })
     }, [filterBy])
+
 
     function handleFilterChange(ev) {
         const selected = ev.target.value
@@ -108,6 +118,8 @@ export function TodoIndex() {
 
     return (
         <section className="todo-index">
+            {/* ✅ Loading Indicator */}
+            {isLoading && <p className="loader">Loading todos...</p>}
             {/* Filter UI */}
             <TodoFilter filterBy={filterBy} onSetFilterBy={onSetFilter} />
 
