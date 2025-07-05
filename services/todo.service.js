@@ -1,5 +1,7 @@
 import { utilService } from './util.service.js'
 import { storageService } from './async-storage.service.js'
+import { userService } from './user.service.js'
+import { setUser } from '../store/actions/user.actions.js'
 
 const TODO_KEY = 'todoDB'
 _createTodos()
@@ -46,21 +48,49 @@ function remove(todoId) {
 }
 
 function save(todo) {
-    if (todo._id) {
-        // TODO - updatable fields
-        todo.updatedAt = Date.now()
-        return storageService.put(TODO_KEY, todo)
-    } else {
-        todo.createdAt = todo.updatedAt = Date.now()
+    console.log('todoService save todo:', todo)
+    console.log('todo._id:', todo._id)
+    console.log('!todo._id:', !todo._id)
 
+    const isNew = !!todo._id
+    console.log('isNew:', isNew)
+    todo.updatedAt = Date.now()
+    debugger
+    if (isNew) {
+        todo.createdAt = todo.updatedAt
+        if (todo.isDone) {
+            return userService.addActivity('Completed a Todo')
+                .then(updatedUser => {
+                    console.log('updatedUser111111111111:', updatedUser)
+                    setUser(updatedUser)
+                    console.log('updatedUser222222222222:', updatedUser)
+                    return storageService.post(TODO_KEY, todo)
+                })
+        }
         return storageService.post(TODO_KEY, todo)
+    } else {
+        return storageService.get(TODO_KEY, todo._id)
+            .then(existingTodo => {
+                const wasDone = existingTodo.isDone
+                const nowDone = todo.isDone
+
+                const promise = storageService.put(TODO_KEY, todo)
+                if (!wasDone && nowDone) {
+                    return userService.addActivity('Completed a Todo')
+                        .then(updatedUser => {
+                            setUser(updatedUser)
+                            return promise
+                        })
+                }
+                return promise
+            })
     }
 }
 
-function getEmptyTodo(txt = '', importance = 5) {
-    return { txt, importance, isDone: false, color: '#ffffff' } // Default white
-}
 
+function getEmptyTodo(txt = '', importance = 5, color = '#ffffff') {
+    return { txt, importance, isDone: false, color }
+}
 function getDefaultFilter() {
     return { txt: '', importance: 0 }
 }
@@ -98,8 +128,8 @@ function _createTodos() {
     }
 }
 
-function _createTodo(txt, importance) {
-    const todo = getEmptyTodo(txt, importance, color = '#ffffff') // Default white
+function _createTodo(txt, importance, color) {
+    const todo = getEmptyTodo(txt, importance, color)  // color will be undefined if not passed, defaults inside getEmptyTodo
     todo._id = utilService.makeId()
     todo.createdAt = todo.updatedAt = Date.now() - utilService.getRandomIntInclusive(0, 1000 * 60 * 60 * 24)
     return todo

@@ -90,6 +90,7 @@ export function TodoIndex() {
 
     // * Toggle isDone status of a todo
     function onToggleTodo(todoId) {
+        console.log('22222222222222:', todoId)
         // const todoToSave = { ...todo, isDone: !todo.isDone }
         //   todoService.save(todoToSave)
         toggleTodo(todoId)

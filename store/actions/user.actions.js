@@ -18,6 +18,7 @@ export function login(credentials) {
 export function signup(credentials) {
     return userService.signup(credentials)
         .then(user => {
+            sessionStorage.setItem('loggedinUser', JSON.stringify(user)) // 🔸 add this
             store.dispatch({ type: SET_USER, user })
         })
         .catch(err => {
@@ -41,7 +42,6 @@ export function logout() {
 }
 
 
-
 export function checkout(diff) {
     return userService.updateScore(-diff)
         .then()
@@ -49,4 +49,10 @@ export function checkout(diff) {
             console.log('user actions -> Cannot checkout', err)
             throw err
         })
+}
+
+export function setUser(user) {
+    return (dispatch) => {
+        dispatch({ type: 'SET_USER', user })
+    }
 }

@@ -32,9 +32,9 @@ function login({ username, password }) {
 }
 
 function signup({ username, password, fullname }) {
-    const user = { 
-        username, 
-        password, 
+    const user = {
+        username,
+        password,
         fullname,
         balance: 10000,
         activities: [],
@@ -77,6 +77,7 @@ function getEmptyCredentials() {
 }
 
 function addActivity(txt) {
+    console.log('Adding activity:', txt)
     const user = getLoggedinUser()
     if (!user) return Promise.reject('No logged-in user')
 
@@ -85,7 +86,7 @@ function addActivity(txt) {
 
     user.activities.unshift({ txt, at: Date.now() })
     user.balance += 10
-
+    console.log('user.balance', user.balance)
     return storageService.put(STORAGE_KEY, user)
         .then((savedUser) => {
             sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(savedUser))

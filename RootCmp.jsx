@@ -52,6 +52,8 @@ export function RootCmp() {
 
                             {/* Dashboard page */}
                             <Route path="/dashboard" element={<Dashboard />} />
+                            {/*"Not Found" page */}
+                            <Route path="*" element={<Home />} />
                         </Routes>
                     </main>
                 </section>
