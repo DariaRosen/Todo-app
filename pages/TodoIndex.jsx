@@ -1,10 +1,7 @@
 
-// import { DataTable } from "../cmps/data-table/DataTable.jsx"
-// import { addTodo, setFilter } from '../store/reducers/todo.reducer.js'
-
 const { useState, useEffect } = React
 const { useSelector, useDispatch } = ReactRedux
-const { Link, useSearchParams } = ReactRouterDOM
+const { Link } = ReactRouterDOM
 
 // * Import reusable components
 import { TodoFilter } from '../cmps/TodoFilter.jsx'
@@ -21,6 +18,7 @@ import { loadTodos } from '../store/actions/todo.actions.js'
 import { removeTodo } from '../store/actions/todo.actions.js'
 import { saveTodo } from '../store/actions/todo.actions.js'
 import { toggleTodo } from '../store/actions/todo.actions.js'
+import { setFilter } from '../store/actions/todo.actions.js'
 
 import { ADD_TODO, SET_TODOS } from '../store/reducers/todo.reducer.js'
 
@@ -30,23 +28,11 @@ import { ADD_TODO, SET_TODOS } from '../store/reducers/todo.reducer.js'
 export function TodoIndex() {
     // * Get todos and filterBy from Redux store
     const todos = useSelector(state => state.todoModule.todos)
-    // const [filterBy, setFilterBy] = useSelector(state => state.todoModule.filterBy)
-    const [filterBy, setFilterBy] = useState(todoService.getDefaultFilter())
+    const filterBy = useSelector(state => state.todoModule.filterBy)
 
     // * Get the dispatch function to send actions to Redux
     const dispatch = useDispatch()
 
-
-    // const [todos, setTodos] = useState(null)
-
-    // // Special hook for accessing search-params:
-    // const [searchParams, setSearchParams] = useSearchParams()
-
-    // const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
-
-    // const [filterBy, setFilterBy] = useState(defaultFilter)
-
-    // * Load todos from backend/store on first load or when filter changes
 
     useEffect(() => {
         loadTodos(filterBy)
@@ -57,10 +43,24 @@ export function TodoIndex() {
             })
     }, [filterBy])
 
-    // * Set new filter (merges into previous filterBy)
-    function onSetFilter(newFilter) {
-        dispatch({ type: 'SET_FILTER', filterBy: newFilter })
+     function handleFilterChange(ev) {
+        const selected = ev.target.value
+        setFilter(selected)
     }
+
+    // // * Set new filter (merges into previous filterBy)
+    // function onSetFilter(newFilter) {
+    //     dispatch({ type: 'SET_FILTER', filterBy: newFilter })
+    // }
+    function onSetFilter(newFilter) {
+        setFilter(newFilter)
+    }
+
+    const filteredTodos = todos.filter(todo => {
+        if (filterBy === 'DONE') return todo.isDone
+        if (filterBy === 'ACTIVE') return !todo.isDone
+        return true
+    })
 
     // * Remove a todo by ID
     function onRemoveTodo(todoId) {
@@ -115,11 +115,16 @@ export function TodoIndex() {
                 <button onClick={onAddTodo}>Add Random Todo ✨</button>
                 <Link to="/todo/edit" className="btn">Add Todo (Form)</Link>
             </div>
-
+            <select onChange={handleFilterChange} value={filterBy}>
+                <option value="ALL">All</option>
+                <option value="ACTIVE">Active</option>
+                <option value="DONE">Done</option>
+            </select>
+            
             {/* List Display */}
             <h2>Todos List</h2>
             <TodoList
-                todos={todos}
+                todos={filteredTodos}
                 onRemoveTodo={onRemoveTodo}
                 onToggleTodo={onToggleTodo}
             />
@@ -129,7 +134,7 @@ export function TodoIndex() {
             <h2>Todos Table</h2>
             <div style={{ width: '60%', margin: 'auto' }}>
                 <DataTable
-                    todos={todos}
+                    todos={filteredTodos}
                     onRemoveTodo={onRemoveTodo}
                 />
             </div>

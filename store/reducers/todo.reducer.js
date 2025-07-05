@@ -12,7 +12,7 @@ export const UNDO_TODOS = 'UNDO_TODOS'             // Revert to previous todos l
 const initialState = {
     todos: [],           // Array of todo objects: { id, txt, isDone }
     isLoading: false,    // Used to show a loading spinner while fetching data
-    filterBy: 'all',     // Current filter applied to todos list
+    filterBy: 'all',     // Current filter applied to todos list, 'ALL' | 'ACTIVE' | 'DONE'
     lastTodos: []        // Backup for undo functionality
 }
 

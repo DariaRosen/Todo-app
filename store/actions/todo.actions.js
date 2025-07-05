@@ -60,3 +60,7 @@ export function toggleTodo(todoId) {
             throw err
         })
 }
+
+export function setFilter(filterBy) {
+    store.dispatch({ type: SET_FILTER, filterBy })
+}
