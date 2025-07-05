@@ -33,6 +33,9 @@ export function TodoEdit() {
             case 'checkbox':
                 value = target.checked
                 break
+            case 'color':
+                // No need to convert color, it is already a string
+                break
 
             default:
                 break
@@ -68,6 +71,8 @@ export function TodoEdit() {
                 <label htmlFor="isDone">isDone:</label>
                 <input onChange={handleChange} value={isDone} type="checkbox" name="isDone" id="isDone" />
 
+                <label htmlFor="color">Color:</label>
+                <input onChange={handleChange} value={todoToEdit.color} type="color" name="color" id="color" />
 
                 <button>Save</button>
             </form>

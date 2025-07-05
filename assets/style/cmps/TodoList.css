@@ -11,5 +11,20 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    background-color: var(--clr1bg);
+    /* background-color: var(--clr1bg); */
+
+    border-left: 10px solid var(--todo-color, #ccc);
+    padding: 1em;
+    margin-bottom: 1em;
+    background-color: var(--todo-color, #f4f4f4);
+    /* Use the color set in inline style */
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    gap: 1em;
+}
+
+.todo-list section {
+    display: flex;
+    gap: 0.5em;
 }
