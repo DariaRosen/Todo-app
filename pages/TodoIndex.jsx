@@ -43,7 +43,7 @@ export function TodoIndex() {
             })
     }, [filterBy])
 
-     function handleFilterChange(ev) {
+    function handleFilterChange(ev) {
         const selected = ev.target.value
         setFilter(selected)
     }
@@ -121,14 +121,18 @@ export function TodoIndex() {
                 <option value="ACTIVE">Active</option>
                 <option value="DONE">Done</option>
             </select>
-            
+
             {/* List Display */}
             <h2>Todos List</h2>
-            <TodoList
-                todos={filteredTodos}
-                onRemoveTodo={onRemoveTodo}
-                onToggleTodo={onToggleTodo}
-            />
+            {filteredTodos.length === 0 ? (
+                <p className="empty-msg">No todos to show...</p>
+            ) : (
+                <TodoList
+                    todos={filteredTodos}
+                    onRemoveTodo={onRemoveTodo}
+                    onToggleTodo={onToggleTodo}
+                />
+            )}
 
             {/* Optional Table View */}
             <hr />
