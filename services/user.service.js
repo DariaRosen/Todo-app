@@ -8,7 +8,8 @@ export const userService = {
     signup,
     getById,
     query,
-    getEmptyCredentials
+    getEmptyCredentials,
+    addActivity
 }
 const STORAGE_KEY_LOGGEDIN = 'user'
 const STORAGE_KEY = 'userDB'
@@ -31,8 +32,16 @@ function login({ username, password }) {
 }
 
 function signup({ username, password, fullname }) {
-    const user = { username, password, fullname }
-    user.createdAt = user.updatedAt = Date.now()
+    const user = { 
+        username, 
+        password, 
+        fullname,
+        balance: 10000,
+        activities: [],
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+    }
+    // user.createdAt = user.updatedAt = Date.now()
 
     return storageService.post(STORAGE_KEY, user)
         .then(_setLoggedinUser)
@@ -47,11 +56,17 @@ function getLoggedinUser() {
     return JSON.parse(sessionStorage.getItem(STORAGE_KEY_LOGGEDIN))
 }
 
+// function _setLoggedinUser(user) {
+//     const userToSave = { _id: user._id, fullname: user.fullname }
+//     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
+//     return userToSave
+// }
+
 function _setLoggedinUser(user) {
-    const userToSave = { _id: user._id, fullname: user.fullname }
-    sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
-    return userToSave
+    sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(user))
+    return user
 }
+
 
 function getEmptyCredentials() {
     return {
@@ -60,6 +75,24 @@ function getEmptyCredentials() {
         password: 'muki1',
     }
 }
+
+function addActivity(txt) {
+    const user = getLoggedinUser()
+    if (!user) return Promise.reject('No logged-in user')
+
+    user.activities = user.activities || []
+    user.balance = user.balance || 0
+
+    user.activities.unshift({ txt, at: Date.now() })
+    user.balance += 10
+
+    return storageService.put(STORAGE_KEY, user)
+        .then((savedUser) => {
+            sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(savedUser))
+            return savedUser
+        })
+}
+
 
 // signup({username: 'muki', password: 'muki1', fullname: 'Muki Ja'})
 // login({username: 'muki', password: 'muki1'})

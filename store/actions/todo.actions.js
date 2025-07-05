@@ -8,6 +8,7 @@ import {
   SET_FILTER,
 } from "../reducers/todo.reducer.js"
 import { store } from "../store.js"
+import { userService } from "../../services/user.service.js"
 
 export function loadTodos(filterBy) {
     store.dispatch({ type: SET_IS_LOADING, isLoading: true })
@@ -50,9 +51,15 @@ export function removeTodo(todoId) {
 }
 
 export function toggleTodo(todoId) {
+    console.log('todoId:11111111111111111', todoId)
     return todoService.toggle(todoId)
         .then((updatedTodo) => {
             store.dispatch({ type: UPDATE_TODO, todo: updatedTodo })
+            // 🟢 Reward user only when task is marked as done
+            
+            if (updatedTodo.isDone) {
+                userService.addActivity('Completed a Todo')
+            }
             return updatedTodo
         })
         .catch(err => {

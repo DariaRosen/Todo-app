@@ -63,16 +63,16 @@ export function TodoEdit() {
         <section className="todo-edit">
             <form onSubmit={onSaveTodo} >
                 <label htmlFor="txt">Text:</label>
-                <input onChange={handleChange} value={txt} type="text" name="txt" id="txt" />
+                <input onChange={handleChange} value={txt || ''} type="text" name="txt" id="txt" />
 
                 <label htmlFor="importance">Importance:</label>
-                <input onChange={handleChange} value={importance} type="number" name="importance" id="importance" />
+                <input onChange={handleChange} value={importance || ''} type="number" name="importance" id="importance" />
 
                 <label htmlFor="isDone">isDone:</label>
-                <input onChange={handleChange} value={isDone} type="checkbox" name="isDone" id="isDone" />
+                <input onChange={handleChange} checked={isDone || false} type="checkbox" name="isDone" id="isDone" />
 
                 <label htmlFor="color">Color:</label>
-                <input onChange={handleChange} value={todoToEdit.color} type="color" name="color" id="color" />
+                <input onChange={handleChange} value={todoToEdit.color || '#ffffff'} type="color" name="color" id="color" />
 
                 <button>Save</button>
             </form>
