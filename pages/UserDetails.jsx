@@ -1,8 +1,8 @@
 const { useState, useEffect } = React
 const { useSelector } = ReactRedux
 const { useParams } = ReactRouterDOM
-
-// import '../assets/style/pages/user-details.css' // Import the CSS file
+import { userService } from '../services/user.service.js'  
+import { showSuccessMsg, showErrorMsg } from '../services/event-bus.service.js'
 
 // * UserDetails - Displays and allows editing of the logged-in user's profile
 export function UserDetails() {
@@ -24,11 +24,19 @@ export function UserDetails() {
     }, [loggedInUser])
 
     // Handle Save button click
-    function onSave(ev) {
-        ev.preventDefault()
-        const updatedUser = { ...loggedInUser, fullname, color, bgColor }
-        setUser(updatedUser) // Update Redux store and session
-    }
+ function onSave(ev) {
+    ev.preventDefault()
+    const updatedUser = { ...loggedInUser, fullname, color, bgColor }
+
+    userService.saveUserPrefs(updatedUser)
+        .then(() => {
+            showSuccessMsg('Preferences saved successfully!')
+        })
+        .catch(err => {
+            console.error('Failed to save preferences:', err)
+            showErrorMsg('Failed to save preferences')
+        })
+}
 
     if (!loggedInUser) return <div>Loading...</div>
 
