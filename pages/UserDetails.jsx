@@ -1,76 +1,72 @@
 const { useState, useEffect } = React
-const { useSelector, useDispatch } = ReactRedux
+const { useSelector } = ReactRedux
 const { useParams } = ReactRouterDOM
 
-import { userService } from '../services/user.service.js'
-import { setUser } from '../store/actions/user.actions.js'
+// import '../assets/style/pages/user-details.css' // Import the CSS file
 
-// export function UserDetails() {
-//     const { userId } = useParams()
-//     const loggedInUser = useSelector(state => state.userModule.loggedInUser)
-//     const dispatch = useDispatch()
+// * UserDetails - Displays and allows editing of the logged-in user's profile
+export function UserDetails() {
+    // Get the currently logged-in user from Redux
+    const loggedInUser = useSelector(storeState => storeState.userModule.loggedInUser)
 
-//     const [user, setUserState] = useState(null)
-//     const [fullname, setFullname] = useState('')
-//     const [prefs, setPrefs] = useState({ darkMode: false })
+    // Local state for form inputs
+    const [fullname, setFullname] = useState('')
+    const [color, setColor] = useState('#000000')
+    const [bgColor, setBgColor] = useState('#000000')
 
-//     const isOwnProfile = loggedInUser && loggedInUser._id === userId
+    // Load user data into the form when the component mounts or user changes
+    useEffect(() => {
+        if (loggedInUser) {
+            setFullname(loggedInUser.fullname || '')
+            setColor(loggedInUser.color || '#000000')
+            setBgColor(loggedInUser.bgColor || '#000000')
+        }
+    }, [loggedInUser])
 
-//     useEffect(() => {
-//         userService.getById(userId).then(user => {
-//             setUserState(user)
-//             setFullname(user.fullname || '')
-//             setPrefs(user.prefs || {})
-//         })
-//     }, [userId])
+    // Handle Save button click
+    function onSave(ev) {
+        ev.preventDefault()
+        const updatedUser = { ...loggedInUser, fullname, color, bgColor }
+        setUser(updatedUser) // Update Redux store and session
+    }
 
-//     function handleSave() {
-//         const updatedUser = {
-//             ...user,
-//             fullname,
-//             prefs,
-//         }
+    if (!loggedInUser) return <div>Loading...</div>
 
-//         userService.saveUserPrefs(updatedUser).then(savedUser => {
-//             setUserState(savedUser)
-//             if (isOwnProfile) dispatch(setUser(savedUser)) // Update Redux if it's me
-//         })
-//     }
+    return (
+        <section className="user-details">
+            <h2>Profile</h2>
 
-//     if (!user) return <p>Loading user...</p>
+            <form onSubmit={onSave} className="user-form">
+                <label>
+                    Name:
+                    <input
+                        type="text"
+                        placeholder="Your name"
+                        value={fullname}
+                        onChange={ev => setFullname(ev.target.value)}
+                    />
+                </label>
 
-//     return (
-//         <section className="user-details">
-//             <h2>User Details</h2>
-//             <p><strong>Username:</strong> {user.username}</p>
+                <label>
+                    Color:
+                    <input
+                        type="color"
+                        value={color}
+                        onChange={ev => setColor(ev.target.value)}
+                    />
+                </label>
 
-//             {isOwnProfile ? (
-//                 <>
-//                     <label>
-//                         Fullname:
-//                         <input
-//                             type="text"
-//                             value={fullname}
-//                             onChange={ev => setFullname(ev.target.value)}
-//                         />
-//                     </label>
+                <label>
+                    BG Color:
+                    <input
+                        type="color"
+                        value={bgColor}
+                        onChange={ev => setBgColor(ev.target.value)}
+                    />
+                </label>
 
-//                     <label>
-//                         <input
-//                             type="checkbox"
-//                             checked={prefs.darkMode}
-//                             onChange={ev =>
-//                                 setPrefs(prev => ({ ...prev, darkMode: ev.target.checked }))
-//                             }
-//                         />
-//                         Dark Mode
-//                     </label>
-
-//                     <button onClick={handleSave}>Save Preferences</button>
-//                 </>
-//             ) : (
-//                 <p><strong>Fullname:</strong> {user.fullname}</p>
-//             )}
-//         </section>
-//     )
-// }
+                <button type="submit">Save</button>
+            </form>
+        </section>
+    )
+}
