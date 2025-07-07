@@ -26,6 +26,7 @@ export function loadTodos(filterBy) {
 }
 
 export function saveTodo(todoToSave) {
+    debugger
     const type = todoToSave._id ? UPDATE_TODO : ADD_TODO
     return todoService.save(todoToSave)
         .then(savedTodo => {

@@ -40,7 +40,11 @@ function signup({ username, password, fullname }) {
         balance: 10000,
         activities: [],
         createdAt: Date.now(),
-        updatedAt: Date.now()
+        updatedAt: Date.now(),
+        prefs: {
+            color: '#000000',
+            bgColor: '#ffffff'
+        },
     }
     // user.createdAt = user.updatedAt = Date.now()
 

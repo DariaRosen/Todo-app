@@ -1,20 +1,23 @@
 import { TodoPreview } from "./TodoPreview.jsx"
 const { Link } = ReactRouterDOM
+const { useSelector } = ReactRedux
 
 export function TodoList({ todos, onRemoveTodo, onToggleTodo }) {
+    const user = useSelector(storeState => storeState.userModule.loggedInUser)
+    const color = (user && user.prefs && user.prefs.color) ? user.prefs.color : '#000000'
+    const bgColor = (user && user.prefs && user.prefs.bgColor) ? user.prefs.bgColor : '#ffffff'
 
     return (
-        <ul className="todo-list">
+        <ul
+            className="todo-list"
+            style={{ color, backgroundColor: bgColor }}
+        >
             {todos.map(todo =>
-                // Each todo list item uses a CSS variable to set the background color
                 <li key={todo._id} style={{ '--todo-color': todo.color }}>
-                    {/* Todo preview includes main info and toggle functionality */}
                     <TodoPreview
                         todo={todo}
                         onToggleTodo={() => onToggleTodo(todo)}
                     />
-
-                    {/* Action buttons: Remove, Details, Edit */}
                     <section>
                         <button onClick={() => onRemoveTodo(todo._id)}>Remove</button>
                         <button>
@@ -29,3 +32,4 @@ export function TodoList({ todos, onRemoveTodo, onToggleTodo }) {
         </ul>
     )
 }
+

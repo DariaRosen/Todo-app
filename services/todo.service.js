@@ -52,7 +52,7 @@ function save(todo) {
     console.log('todo._id:', todo._id)
     console.log('!todo._id:', !todo._id)
 
-    const isNew = !!todo._id
+    const isNew = !!!todo._id
     console.log('isNew:', isNew)
     todo.updatedAt = Date.now()
     debugger
