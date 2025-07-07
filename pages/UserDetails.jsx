@@ -24,6 +24,16 @@ export function UserDetails() {
         }
     }, [loggedInUser])
 
+    function getRelativeTime(timestamp) {
+        const diffMs = Date.now() - timestamp
+        const diffSec = Math.floor(diffMs / 1000)
+
+        if (diffSec < 60) return 'Just now'
+        if (diffSec < 60 * 60) return `${Math.floor(diffSec / 60)} minutes ago`
+        if (diffSec < 60 * 60 * 24) return `Couple of hours ago`
+        return `${Math.floor(diffSec / (60 * 60 * 24))} days ago`
+    }
+
 
     // Handle Save button click
     function onSave(ev) {
@@ -84,6 +94,18 @@ export function UserDetails() {
 
                 <button type="submit">Save</button>
             </form>
+            {loggedInUser.activities && loggedInUser.activities.length > 0 && (
+                <section className="user-activities">
+                    <h3>Recent Activities</h3>
+                    <ul>
+                        {loggedInUser.activities.map((activity, idx) => (
+                            <li key={idx}>
+                                • {getRelativeTime(activity.at)}: {activity.txt}
+                            </li>
+                        ))}
+                    </ul>
+                </section>
+            )}
         </section>
     )
 }
